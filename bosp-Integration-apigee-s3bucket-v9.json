@@ -1,0 +1,291 @@
+{
+  "name": "projects/1022250130488/locations/us-east4/products/apigee/integrations/bosp-Integration-apigee-s3bucket/versions/e3ded4fb-88a0-45f3-b295-a90f3a7e8cb3",
+  "updateTime": "2023-10-23T05:23:19.595Z",
+  "lockHolder": "raokanneboinav@dnb.com",
+  "createTime": "2023-10-23T03:46:49.886Z",
+  "lastModifierEmail": "raokanneboinav@dnb.com",
+  "triggerConfigs": [{
+    "label": "API Trigger",
+    "startTasks": [{
+      "taskId": "3"
+    }],
+    "properties": {
+      "Trigger name": "bosp_data_mig_opportunityflagupd_API_1"
+    },
+    "triggerType": "API",
+    "triggerNumber": "1",
+    "triggerId": "api_trigger/bosp_data_mig_opportunityflagupd_API_1",
+    "position": {
+      "x": -210
+    }
+  }],
+  "taskConfigs": [{
+    "task": "JavaScriptTask",
+    "taskId": "6",
+    "parameters": {
+      "script": {
+        "key": "script",
+        "value": {
+          "stringValue": "\n/**\n * Function that is called during the JavaScript Task execution.\n * @param {IntegrationEvent} event\n */\n\nfunction executeScript(event) {\n    var responseBody \u003d event.getParameter(\"bucket_output\");\n    var responseFirstElement \u003d responseBody[0].Content;   \n    //CSV logic\n    var lines \u003d responseFirstElement.split(\u0027\\n\u0027)\n    event.setParameter(\"request_csv_body\",lines.toString())\n    //JSON logic\n    event.setParameter(\"request_json_body\",JSON.parse(responseFirstElement))\n    \n    var awsfilepath\u003d\"RevenueCloud/apigeeintegration3.json\";\n    event.setParameter(\"awsfilepath\",awsfilepath)\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "7"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "JavaScript",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 504
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "5",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_4_connectorOutputPayload`$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$bucket_output$\",\n      \"fieldType\": \"JSON_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "6"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Data Mapping 1",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 378
+    }
+  }, {
+    "task": "GenericRestV2Task",
+    "taskId": "7",
+    "parameters": {
+      "throwError": {
+        "key": "throwError",
+        "value": {
+          "booleanValue": true
+        }
+      },
+      "responseBody": {
+        "key": "responseBody",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseBody`$"]
+          }
+        }
+      },
+      "disableSSLValidation": {
+        "key": "disableSSLValidation",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "httpParams": {
+        "key": "httpParams",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"content-type\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"application/json\"\n      }\n    }\n  }, {\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"accept\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"*/*\"\n      }\n    }\n  }]\n}"
+        }
+      },
+      "responseHeader": {
+        "key": "responseHeader",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseHeader`$"]
+          }
+        }
+      },
+      "userAgent": {
+        "key": "userAgent",
+        "value": {
+          "stringValue": ""
+        }
+      },
+      "httpMethod": {
+        "key": "httpMethod",
+        "value": {
+          "stringValue": "POST"
+        }
+      },
+      "responseStatus": {
+        "key": "responseStatus",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseStatus`$"]
+          }
+        }
+      },
+      "url": {
+        "key": "url",
+        "value": {
+          "stringValue": "https://dev.integrations.dnb.com/aws-s3"
+        }
+      },
+      "useSSL": {
+        "key": "useSSL",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "urlFetchingService": {
+        "key": "urlFetchingService",
+        "value": {
+          "stringValue": "HARPOON"
+        }
+      },
+      "urlQueryStrings": {
+        "key": "urlQueryStrings"
+      },
+      "requestorId": {
+        "key": "requestorId",
+        "value": {
+          "stringValue": ""
+        }
+      },
+      "requestBody": {
+        "key": "requestBody",
+        "value": {
+          "stringValue": "$request_json_body$"
+        }
+      },
+      "followRedirects": {
+        "key": "followRedirects",
+        "value": {
+          "booleanValue": true
+        }
+      },
+      "additionalHeaders": {
+        "key": "additionalHeaders",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"path\"\n      }\n    },\n    \"value\": {\n      \"referenceKey\": \"$awsfilepath$\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Call REST Endpoint",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 630
+    }
+  }, {
+    "task": "GenericConnectorTask",
+    "taskId": "4",
+    "parameters": {
+      "connectorInputPayload": {
+        "key": "connectorInputPayload",
+        "value": {
+          "stringValue": "$`Task_4_connectorInputPayload`$"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_4_connectorOutputPayload`$"
+        }
+      },
+      "config": {
+        "key": "config",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/us-east4/connections/gcs-connector\",\n    \"serviceName\": \"projects/sd21d41e1dbe2ce12-tp/locations/us-east4/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/global/providers/gcp/connectors/gcs/versions/1\"\n  },\n  \"operation\": \"EXECUTE_ACTION\"\n}"
+        }
+      },
+      "actionName": {
+        "key": "actionName",
+        "value": {
+          "stringValue": "DownloadObject"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "5"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Connectors",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 252
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "3",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$connector_input$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_4_connectorInputPayload`$\",\n      \"fieldType\": \"JSON_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "4"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Data Mapping",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 126
+    }
+  }],
+  "integrationParameters": [{
+    "key": "`Task_7_responseHeader`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseHeader`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "`Task_7_responseBody`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseBody`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "`Task_7_responseStatus`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseStatus`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "request_json_body",
+    "dataType": "JSON_VALUE",
+    "displayName": "request_json_body"
+  }, {
+    "key": "request_csv_body",
+    "dataType": "STRING_VALUE",
+    "displayName": "request_csv_body"
+  }, {
+    "key": "`Task_4_connectorInputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_4_connectorInputPayload`",
+    "producer": "1_4",
+    "jsonSchema": "{\n  \"type\": \"object\",\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"properties\": {\n    \"Bucket\": {\n      \"type\": \"string\",\n      \"readOnly\": false,\n      \"description\": \"Bucket name where the object is located.\"\n    },\n    \"ObjectFilePath\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"Object name for the object that should be retrieved. If not specified, all the objects from the specified bucket will be retrieved.\"\n    },\n    \"HasBytes\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"Whether to download content as bytes.\",\n      \"default\": false\n    },\n    \"UpdatedEndDate\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"The end of the date range to download objects. If not specified, objects will be downloaded from the specified UpdatedStartDate until the present day.\"\n    },\n    \"UpdatedStartDate\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"The start of the date range to download objects. If not specified, objects will be downloaded from the beginning of the time until the UpdatedEndDate.\"\n    }\n  }\n}"
+  }, {
+    "key": "`Task_4_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_4_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_4",
+    "jsonSchema": "{\n  \"type\": \"array\",\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"items\": {\n    \"type\": \"object\",\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n  }\n}"
+  }, {
+    "key": "connector_input",
+    "dataType": "JSON_VALUE",
+    "defaultValue": {
+      "jsonValue": "{\n  \"Bucket\": \"dnb-ltc-dev1-css-test-in\",\n  \"ObjectFilePath\": \"Data_Integration/BOSP-Integration/AWS_Sample_Data.json\"\n}"
+    },
+    "displayName": "connector_input"
+  }, {
+    "key": "bucket_output",
+    "dataType": "JSON_VALUE",
+    "displayName": "bucket_output"
+  }, {
+    "key": "awsfilepath",
+    "dataType": "STRING_VALUE",
+    "displayName": "awsfilepath"
+  }]
+}
