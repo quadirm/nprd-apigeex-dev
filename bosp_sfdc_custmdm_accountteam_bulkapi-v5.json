@@ -1,0 +1,841 @@
+{
+  "name": "projects/1022250130488/locations/us-east4/products/apigee/integrations/bosp_sfdc_custmdm_accountteam_bulkapi/versions/43c150b5-d73f-4702-ba72-83a223fbc282",
+  "description": "Accountteam interface load for customer mdm(incremental load)and BSP-001",
+  "updateTime": "2023-09-26T05:38:11.256Z",
+  "lockHolder": "jhaas@dnb.com",
+  "createTime": "2023-09-26T05:37:43.458Z",
+  "lastModifierEmail": "jhaas@dnb.com",
+  "triggerConfigs": [{
+    "label": "Schedule Trigger",
+    "startTasks": [{
+      "taskId": "1"
+    }],
+    "properties": {
+      "Timer Name": "bosp_sfdc_wd_contact_bulkapi_Timer_1",
+      "Scheduled Time spec": "36 8 * * *"
+    },
+    "triggerType": "CRON",
+    "triggerNumber": "1",
+    "triggerId": "cron_trigger/bosp_sfdc_wd_contact_bulkapi_Timer_1/36+8+*+*+*",
+    "position": {
+      "x": -210
+    }
+  }],
+  "taskConfigs": [{
+    "task": "GenericConnectorTask",
+    "taskId": "16",
+    "parameters": {
+      "entityType": {
+        "key": "entityType",
+        "value": {
+          "stringValue": "sfdc_metadata1"
+        }
+      },
+      "connectorInputPayload": {
+        "key": "connectorInputPayload",
+        "value": {
+          "stringValue": "$`Task_16_connectorInputPayload`$"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_16_connectorOutputPayload`$"
+        }
+      },
+      "config": {
+        "key": "config",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/us-east4/connections/apigee-sfdc-metadata\",\n    \"serviceName\": \"projects/sd21d41e1dbe2ce12-tp/locations/us-east4/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/global/providers/gcp/connectors/bigquery/versions/1\"\n  },\n  \"operation\": \"CREATE_ENTITY\"\n}"
+        }
+      }
+    },
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "BigQuery Create Entry For Next Load",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 2016
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "2",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_1_connectorOutputPayload`$\"\n        },\n        \"transformationFunctions\": [{\n          \"functionType\": {\n            \"jsonFunction\": {\n              \"functionName\": \"TO_STRING\"\n            }\n          }\n        }]\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$bq_metadata$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "3"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Map BigQuery Metadata",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 252
+    }
+  }, {
+    "task": "GenericConnectorTask",
+    "taskId": "1",
+    "parameters": {
+      "listEntitiesSortByColumns": {
+        "key": "listEntitiesSortByColumns",
+        "value": {
+          "stringValue": "$`Task_1_listEntitiesSortByColumns`$"
+        }
+      },
+      "filterClause": {
+        "key": "filterClause",
+        "value": {
+          "stringValue": "$`Task_1_filterClause`$"
+        }
+      },
+      "listEntitiesPageToken": {
+        "key": "listEntitiesPageToken",
+        "value": {
+          "stringValue": "$`Task_1_listEntitiesPageToken`$"
+        }
+      },
+      "entityType": {
+        "key": "entityType",
+        "value": {
+          "stringValue": "sfdc_metadata1"
+        }
+      },
+      "listEntitiesPageSize": {
+        "key": "listEntitiesPageSize",
+        "value": {
+          "stringValue": "$`Task_1_listEntitiesPageSize`$"
+        }
+      },
+      "listEntitiesNextPageToken": {
+        "key": "listEntitiesNextPageToken",
+        "value": {
+          "stringValue": "$`Task_1_listEntitiesNextPageToken`$"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_1_connectorOutputPayload`$"
+        }
+      },
+      "config": {
+        "key": "config",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/us-east4/connections/apigee-sfdc-metadata\",\n    \"serviceName\": \"projects/sd21d41e1dbe2ce12-tp/locations/us-east4/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/global/providers/gcp/connectors/bigquery/versions/1\"\n  },\n  \"operation\": \"LIST_ENTITIES\"\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "2"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "BigQuery Get Metadata",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 126
+    }
+  }, {
+    "task": "GenericRestV2Task",
+    "taskId": "7",
+    "parameters": {
+      "throwError": {
+        "key": "throwError",
+        "value": {
+          "booleanValue": true
+        }
+      },
+      "responseBody": {
+        "key": "responseBody",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseBody`$"]
+          }
+        }
+      },
+      "disableSSLValidation": {
+        "key": "disableSSLValidation",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "httpParams": {
+        "key": "httpParams",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"content-type\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"application/json; charset\\u003dUTF-8\"\n      }\n    }\n  }, {\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"accept\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"application/json\"\n      }\n    }\n  }]\n}"
+        }
+      },
+      "authConfig": {
+        "key": "authConfig",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.authconfig.AuthConfigTaskParam\",\n  \"authConfigId\": \"08d77d19-2764-4a9e-96c2-cedae81b57a9\"\n}"
+        }
+      },
+      "responseHeader": {
+        "key": "responseHeader",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseHeader`$"]
+          }
+        }
+      },
+      "userAgent": {
+        "key": "userAgent",
+        "value": {
+          "stringValue": ""
+        }
+      },
+      "httpMethod": {
+        "key": "httpMethod",
+        "value": {
+          "stringValue": "GET"
+        }
+      },
+      "responseStatus": {
+        "key": "responseStatus",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_7_responseStatus`$"]
+          }
+        }
+      },
+      "url": {
+        "key": "url",
+        "value": {
+          "stringValue": "$customer_pull_url$"
+        }
+      },
+      "useSSL": {
+        "key": "useSSL",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "urlFetchingService": {
+        "key": "urlFetchingService",
+        "value": {
+          "stringValue": "HARPOON"
+        }
+      },
+      "urlQueryStrings": {
+        "key": "urlQueryStrings"
+      },
+      "requestorId": {
+        "key": "requestorId",
+        "value": {
+          "stringValue": ""
+        }
+      },
+      "requestBody": {
+        "key": "requestBody",
+        "value": {
+          "stringValue": ""
+        }
+      },
+      "followRedirects": {
+        "key": "followRedirects",
+        "value": {
+          "booleanValue": true
+        }
+      },
+      "additionalHeaders": {
+        "key": "additionalHeaders"
+      }
+    },
+    "nextTasks": [{
+      "taskId": "8"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Pull CSV Data",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 882
+    }
+  }, {
+    "task": "JsonnetMapperTask",
+    "taskId": "12",
+    "parameters": {
+      "template": {
+        "key": "template",
+        "value": {
+          "stringValue": "local f \u003d import \"functions\"; // Import additional functions\nlocal content \u003d f.extVar(\"sf_finalpayload\");\nlocal filename \u003d f.extVar(\"filename\");\n//local job_load_time \u003d f.extVar(\"job_load_time\");\nlocal job_load_time \u003d f.extVar(\"bq_new_load_time\");\n{\n   \ncustomer_JSON:{ \n\"Content\": content,\n\"Bucket\": \"dnb-ltc-dev1-css-test-in/Data_Integration/BOSP-Integration\",\n\"ObjectName\" : filename\n},\n metadata_update_JSON:{ \n\n\"pipeline_name\":\"bosp_sfdc_custmdm_accountteam_bulkapi\",\n\"last_load_time\":job_load_time,\n\"load_status\":false\n}\n\n}\n"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "13"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Build GCS \u0026 BQ Payload",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1302
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "13",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$customer_JSON$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_14_connectorInputPayload`$\",\n      \"fieldType\": \"JSON_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }, {\n    \"inputField\": {\n      \"fieldType\": \"JSON_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$metadata_update_JSON$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$`Task_16_connectorInputPayload`$\",\n      \"fieldType\": \"JSON_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "14"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Map GCS \u0026 BQ payloads",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1638
+    }
+  }, {
+    "task": "JavaScriptTask",
+    "taskId": "3",
+    "parameters": {
+      "script": {
+        "key": "script",
+        "value": {
+          "stringValue": "/**\n * Function that is called during the JavaScript Task execution.\n * @param {IntegrationEvent} event\n */\nfunction executeScript(event) {\n   const query \u003d \"select Id,AccountId,UserId,TeamMemberRole,AccountAccessLevel,OpportunityAccessLevel,CaseAccessLevel,ContactAccessLevel,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,IsDeleted from AccountTeamMember Where LastModifiedDate \u003e\u003d\";\n   const bq_metadata \u003d event.getParameter(\"bq_metadata\");\n   const metadata \u003d bq_metadata.replace(\"[\",\"\").replace(\"]\",\"\");\n   const metadata_json \u003d JSON.parse(metadata);\n  // const batch_id \u003d metadata_json.batch_id;\n   const last_load \u003d metadata_json.last_load_time;\n   const customer_last_load \u003d last_load.replace(\" \",\"T\").concat(\"Z\");\n   //event.setParameter(\"batch_id\",batch_id);\n   event.setParameter(\"last_load_time\",customer_last_load);\n   const salesforce_query_url \u003d event.getParameter(\"salesforce_query_url\");\n  \n   //const new_batch_id \u003d batch_id+1;\n   const current_date \u003d new Date();\n   const today \u003d new Date();\n   const yesterday \u003d new Date(today);\n   yesterday.setDate(today.getDate() - 1);\n   const job_load_time \u003d yesterday.toISOString().split(\u0027T\u0027)[0]+\"T23:59:59.0Z\";\n  const bq_new_load_time \u003d job_load_time.replace(\"T\",\" \").replace(\"Z\",\"\");\n   const filename \u003d \"accountteam.csv\";\n   event.setParameter(\"filename\",filename);\n  const customer_query \u003d query+ customer_last_load +\" AND LastModifiedDate \u003c\u003d \" + job_load_time;\n   const query_json_payload \u003d {\"operation\" : \"query\",\n                              \"query\" : customer_query};\n   query_json_payload.query \u003d customer_query;\n   event.setParameter(\"query_json_payload\",query_json_payload);\n   //event.setParameter(\"new_batch_id\",new_batch_id);\n     event.setParameter(\"bq_new_load_time\",bq_new_load_time);\n   \n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "4"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Build Salesforce Query",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 378
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "5",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$salesforce_query_url$\"\n        },\n        \"transformationFunctions\": [{\n          \"functionType\": {\n            \"stringFunction\": {\n              \"functionName\": \"CONCAT\"\n            }\n          },\n          \"parameters\": [{\n            \"initialValue\": {\n              \"literalValue\": {\n                \"stringValue\": \"/\"\n              }\n            }\n          }]\n        }, {\n          \"functionType\": {\n            \"stringFunction\": {\n              \"functionName\": \"CONCAT\"\n            }\n          },\n          \"parameters\": [{\n            \"initialValue\": {\n              \"referenceValue\": \"$job_id$\"\n            }\n          }]\n        }]\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$billing_customer_status_url$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }, {\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$billing_customer_status_url$\"\n        },\n        \"transformationFunctions\": [{\n          \"functionType\": {\n            \"stringFunction\": {\n              \"functionName\": \"CONCAT\"\n            }\n          },\n          \"parameters\": [{\n            \"initialValue\": {\n              \"literalValue\": {\n                \"stringValue\": \"/results\"\n              }\n            }\n          }]\n        }]\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$customer_pull_url$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "6"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Map Status and Results URL",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 630
+    }
+  }, {
+    "task": "JavaScriptTask",
+    "taskId": "9",
+    "parameters": {
+      "script": {
+        "key": "script",
+        "value": {
+          "stringValue": "\n/**\n * Function that is called during the JavaScript Task execution.\n * @param {IntegrationEvent} event\n */\n\nfunction executeScript(event) {\n    const payloadsf \u003d event.getParameter(\"sf_payload\")\n    const payload \u003d \"`\" + payloadsf +\"`\";\n    const lines \u003d payload.split(/[\\r\\n]+/);\n    lines.shift();\n    const headerpayload \u003d payloadsf.substr(0, payload.indexOf(\"\\n\")).toUpperCase();\n    \nvar insideQuotes \u003d false;\nvar cleanedLines \u003d [];\n\nlines.forEach(line \u003d\u003e {\n  if (insideQuotes) {\n    cleanedLines[cleanedLines.length - 1] +\u003d \u0027 \u0027 + line;\n    if (line.endsWith(\u0027\"\u0027)) {\n      insideQuotes \u003d false;\n    }\n  } else {\n    if (line.startsWith(\u0027\"\u0027) \u0026\u0026 !line.endsWith(\u0027\"\u0027)) {\n      insideQuotes \u003d true;\n    }\n    cleanedLines.push(line);\n  }\n});\n\nconst cleanedCSV \u003d cleanedLines.join(\u0027\\n\u0027);\nevent.setParameter(\"datawoheader\",cleanedCSV);\n//const headerpayload \u003d \"ID,ISDELETED,NAME,TYPE,PARENTID,BILLINGSTREET,BILLINGCITY,BILLINGSTATE,BILLINGPOSTALCODE,BILLINGCOUNTRY,SHIPPINGSTREET,SHIPPINGCITY,SHIPPINGSTATE,SHIPPINGPOSTALCODE,SHIPPINGCOUNTRY,PHONE,WEBSITE,SIC,INDUSTRY,ANNUALREVENUE,NUBEROFEMPLOYEES,CURRENCYISOCODE,OWNERID,CREATEDDATE,CREATEDBYID,LASTMODIFIEDDATE,LASTMODIFIEDBYID,LASTACTIVITYDATE,ACCOUNTSOURCE,SICDESC,D_U_N_S__C,GLOBAL_ULTIMATE_DUNS__C,PARENT_HQ_DUNS__C,DUNS_TRADE_NAME__C,PMD_CUSTOMER_ID__C,DOMESTIC_ULTIMATE_DUNS__C,GLOBAL_500__C,SDR_DO_NOT_CONTACT__C,OPERATING_STATUS__C,MDR_CUSTOMER_NO__C,DIRECT_UPDATE_PROCESS__C,EMPLOYEES_AT_SITE__C,CHANNEL_IDENTIFIER__C,LANGUAGE_INDICATOR__C,TEST_ACCOUNT__C,TOTAL_CHANNEL_IDENTIFIER__C,ARCHIVE_DATE_SENT_TO__C,PAYDEX__C,ACTIVE_ACCOUNT__C,SFDC_IQ_ID__C,NDA_AGREEMENT_START_DATE__C,ACCOUNT_ID_18_DIGIT__C,CEO__C,CFO__C,DB_DIRECT_DATA_UPDATE_DATE__C,CUSTOMER_STATUS__C,MSA_DATE_OF_EXPIRATION__C,MSA_STATUS__C,GROWTH_RATE__C,HEADQUARTERS__C,KEY_COMPETITOR_1_NAME__C,KEY_COMPETITOR_2_NAME__C,KEY_COMPETITOR_3_NAME__C,DOMESTIC_ULTIMATE_DUNS_NAME__C,GLOBAL_ULTIMATE_DUNS_NAME__C,PARENT_HQ_DUNS_NAME__C,APTS_HAS_PERPETUAL_MA__C,APTS_INTERNAL_SUBSCRIBER__C,APTS_PO_REQUIRED__C,APTS_ISADDRESS_VALIDATED__C,BUSINESS_UNITS__C,SIC_CODE__C,MA_EFFECTIVE_DATE__C,MA_SIGNING_ENTITY__C,ACCOUNT_OWNER_18_DIGIT__C,DIRECT_MAINTENANCE__C,DESCRIPTION_DIRECT__C,DB_DIRECT_DATA_UPDATE_RESULT__C,NDA_STATUS__C \";\nconst sf_finalpayload \u003d headerpayload + cleanedCSV;\nevent.setParameter(\"sf_finalpayload\",sf_finalpayload);\n}\n\n"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "12"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "JavaScript",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1134
+    }
+  }, {
+    "task": "GenericConnectorTask",
+    "taskId": "14",
+    "parameters": {
+      "connectorInputPayload": {
+        "key": "connectorInputPayload",
+        "value": {
+          "stringValue": "$`Task_14_connectorInputPayload`$"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_14_connectorOutputPayload`$"
+        }
+      },
+      "config": {
+        "key": "config",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/us-east4/connections/gcs-connector\",\n    \"serviceName\": \"projects/sd21d41e1dbe2ce12-tp/locations/us-east4/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/global/providers/gcp/connectors/gcs/versions/1\"\n  },\n  \"operation\": \"EXECUTE_ACTION\"\n}"
+        }
+      },
+      "actionName": {
+        "key": "actionName",
+        "value": {
+          "stringValue": "UploadObject"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "15"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Build File in GCS bucket",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1764
+    }
+  }, {
+    "task": "GenericConnectorTask",
+    "taskId": "15",
+    "parameters": {
+      "filterClause": {
+        "key": "filterClause",
+        "value": {
+          "stringValue": "$`Task_15_filterClause`$"
+        }
+      },
+      "entityType": {
+        "key": "entityType",
+        "value": {
+          "stringValue": "sfdc_metadata1"
+        }
+      },
+      "connectorInputPayload": {
+        "key": "connectorInputPayload",
+        "value": {
+          "stringValue": "$`Task_15_connectorInputPayload`$"
+        }
+      },
+      "entityId": {
+        "key": "entityId",
+        "value": {
+          "stringValue": "$`Task_15_entityId`$"
+        }
+      },
+      "connectorOutputPayload": {
+        "key": "connectorOutputPayload",
+        "value": {
+          "stringValue": "$`Task_15_connectorOutputPayload`$"
+        }
+      },
+      "config": {
+        "key": "config",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.connectors.GenericConnectorTaskConfig\",\n  \"connection\": {\n    \"connectionName\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/us-east4/connections/apigee-sfdc-metadata\",\n    \"serviceName\": \"projects/sd21d41e1dbe2ce12-tp/locations/us-east4/namespaces/connectors/services/runtime\",\n    \"connectorVersion\": \"projects/nprd-apigeex-dev7f4409185f31d5/locations/global/providers/gcp/connectors/bigquery/versions/1\"\n  },\n  \"operation\": \"UPDATE_ENTITY\"\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "16"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "BigQuery Update",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1890
+    }
+  }, {
+    "task": "SubWorkflowWhileLoopV2Task",
+    "taskId": "4",
+    "parameters": {
+      "triggerId": {
+        "key": "triggerId",
+        "value": {
+          "stringValue": "api_trigger/query_trigger"
+        }
+      },
+      "aggregatorParameterMapping": {
+        "key": "aggregatorParameterMapping"
+      },
+      "loopMetadata": {
+        "key": "loopMetadata",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_4_loopMetadata`$"]
+          }
+        }
+      },
+      "disableEucPropagation": {
+        "key": "disableEucPropagation",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "whileCondition": {
+        "key": "whileCondition",
+        "value": {
+          "stringValue": "$job_id$\u003d\"\""
+        }
+      },
+      "workflowName": {
+        "key": "workflowName",
+        "value": {
+          "stringValue": "bosp_sfdc_bulkapi_query"
+        }
+      },
+      "requestParameterMapping": {
+        "key": "requestParameterMapping",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"salesforce_query_url\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"endpoint_url\"\n      }\n    }\n  }, {\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"query_json_payload\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"json_query_payload\"\n      }\n    }\n  }]\n}"
+        }
+      },
+      "overrideParameterMapping": {
+        "key": "overrideParameterMapping",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"job_id\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"job_id\"\n      }\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "5"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Submit Query Job",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 504
+    }
+  }, {
+    "task": "SubWorkflowWhileLoopV2Task",
+    "taskId": "6",
+    "parameters": {
+      "triggerId": {
+        "key": "triggerId",
+        "value": {
+          "stringValue": "api_trigger/status_trigger"
+        }
+      },
+      "aggregatorParameterMapping": {
+        "key": "aggregatorParameterMapping"
+      },
+      "loopMetadata": {
+        "key": "loopMetadata",
+        "value": {
+          "stringArray": {
+            "stringValues": ["$`Task_6_loopMetadata`$"]
+          }
+        }
+      },
+      "disableEucPropagation": {
+        "key": "disableEucPropagation",
+        "value": {
+          "booleanValue": false
+        }
+      },
+      "whileCondition": {
+        "key": "whileCondition",
+        "value": {
+          "stringValue": "$customer_status$!\u003d\"JobComplete\""
+        }
+      },
+      "workflowName": {
+        "key": "workflowName",
+        "value": {
+          "stringValue": "bosp_sfdc_bulkapi_status"
+        }
+      },
+      "requestParameterMapping": {
+        "key": "requestParameterMapping",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"billing_customer_status_url\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"job_status_url\"\n      }\n    }\n  }]\n}"
+        }
+      },
+      "overrideParameterMapping": {
+        "key": "overrideParameterMapping",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.ParameterMap\",\n  \"entries\": [{\n    \"key\": {\n      \"literalValue\": {\n        \"stringValue\": \"job_status\"\n      }\n    },\n    \"value\": {\n      \"literalValue\": {\n        \"stringValue\": \"customer_status\"\n      }\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "7"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Check Job Completion Status",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 756
+    }
+  }, {
+    "task": "FieldMappingTask",
+    "taskId": "8",
+    "parameters": {
+      "FieldMappingConfigTaskParameterKey": {
+        "key": "FieldMappingConfigTaskParameterKey",
+        "value": {
+          "jsonValue": "{\n  \"@type\": \"type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig\",\n  \"mappedFields\": [{\n    \"inputField\": {\n      \"fieldType\": \"STRING_VALUE\",\n      \"transformExpression\": {\n        \"initialValue\": {\n          \"referenceValue\": \"$`Task_7_responseBody`$\"\n        }\n      }\n    },\n    \"outputField\": {\n      \"referenceKey\": \"$sf_payload$\",\n      \"fieldType\": \"STRING_VALUE\",\n      \"cardinality\": \"OPTIONAL\"\n    }\n  }]\n}"
+        }
+      }
+    },
+    "nextTasks": [{
+      "taskId": "9"
+    }],
+    "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+    "displayName": "Data Mapping",
+    "externalTaskType": "NORMAL_TASK",
+    "position": {
+      "x": -210,
+      "y": 1008
+    }
+  }],
+  "integrationParameters": [{
+    "key": "`Task_1_listEntitiesPageSize`",
+    "dataType": "INT_VALUE",
+    "displayName": "`Task_1_listEntitiesPageSize`",
+    "producer": "1_1"
+  }, {
+    "key": "`Task_1_listEntitiesPageToken`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_1_listEntitiesPageToken`",
+    "producer": "1_1"
+  }, {
+    "key": "`Task_1_listEntitiesSortByColumns`",
+    "dataType": "STRING_ARRAY",
+    "displayName": "`Task_1_listEntitiesSortByColumns`",
+    "producer": "1_1"
+  }, {
+    "key": "`Task_1_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_1_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_1",
+    "jsonSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"batch_id\": {\n        \"type\": [\"number\", \"null\"],\n        \"readOnly\": false\n      },\n      \"invoice_load_status\": {\n        \"type\": [\"boolean\", \"null\"],\n        \"readOnly\": false\n      },\n      \"credit_load_status\": {\n        \"type\": [\"boolean\", \"null\"],\n        \"readOnly\": false\n      },\n      \"sales_order_load_status\": {\n        \"type\": [\"boolean\", \"null\"],\n        \"readOnly\": false\n      },\n      \"invoice_last_load_time\": {\n        \"type\": [\"string\", \"null\"],\n        \"readOnly\": false\n      },\n      \"credit_last_load_time\": {\n        \"type\": [\"string\", \"null\"],\n        \"readOnly\": false\n      },\n      \"sales_order_last_load_time\": {\n        \"type\": [\"string\", \"null\"],\n        \"readOnly\": false\n      }\n    }\n  }\n}"
+  }, {
+    "key": "`Task_1_listEntitiesNextPageToken`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_1_listEntitiesNextPageToken`",
+    "isTransient": true,
+    "producer": "1_1"
+  }, {
+    "key": "bq_metadata",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "bq_metadata"
+  }, {
+    "key": "`Task_4_loopMetadata`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_4_loopMetadata`",
+    "isTransient": true,
+    "producer": "1_4"
+  }, {
+    "key": "`Task_6_loopMetadata`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_6_loopMetadata`",
+    "isTransient": true,
+    "producer": "1_6"
+  }, {
+    "key": "load_date",
+    "dataType": "STRING_VALUE",
+    "displayName": "load_date",
+    "inputOutputType": "IN"
+  }, {
+    "key": "`Task_7_responseHeader`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseHeader`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "`Task_7_responseStatus`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseStatus`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "requestContent",
+    "dataType": "JSON_VALUE",
+    "displayName": "requestContent"
+  }, {
+    "key": "`Task_15_entityId`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_15_entityId`",
+    "producer": "1_15"
+  }, {
+    "key": "`Task_15_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_15_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_15"
+  }, {
+    "key": "job_id",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "job_id",
+    "inputOutputType": "IN_OUT"
+  }, {
+    "key": "last_load_time",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "last_load_time",
+    "inputOutputType": "OUT"
+  }, {
+    "key": "filename",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "filename"
+  }, {
+    "key": "query_json_payload",
+    "dataType": "JSON_VALUE",
+    "displayName": "query_json_payload",
+    "inputOutputType": "IN_OUT"
+  }, {
+    "key": "sf_payload",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "sf_payload"
+  }, {
+    "key": "xmlResponse",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "xmlResponse"
+  }, {
+    "key": "`Task_7_responseBody`",
+    "dataType": "STRING_VALUE",
+    "displayName": "`Task_7_responseBody`",
+    "isTransient": true,
+    "producer": "1_7"
+  }, {
+    "key": "metadata_update_JSON",
+    "dataType": "JSON_VALUE",
+    "displayName": "metadata_update_JSON",
+    "inputOutputType": "IN"
+  }, {
+    "key": "`Task_14_connectorInputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_14_connectorInputPayload`",
+    "producer": "1_14",
+    "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"FolderPath\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"The path to the folder that will receive the data of the object.\"\n    },\n    \"Content\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"The Content to be uploaded in the bucket\"\n    },\n    \"ObjectName\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"The name of the uploaded object. It should be specified only when uploading the content as InputStream.\"\n    },\n    \"ContentBytes\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"Bytes content to upload as file.\"\n    },\n    \"ContentType\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"Content-Type of the object data.\",\n      \"default\": \"application/x-www-form-urlencoded\"\n    },\n    \"HasBytes\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false,\n      \"description\": \"Whether to upload content as bytes.\",\n      \"default\": false\n    },\n    \"Bucket\": {\n      \"type\": \"string\",\n      \"readOnly\": false,\n      \"description\": \"Bucket name where the object will be uploaded.\"\n    }\n  }\n}"
+  }, {
+    "key": "`Task_14_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_14_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_14",
+    "jsonSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\"\n  }\n}"
+  }, {
+    "key": "`Task_16_connectorInputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_16_connectorInputPayload`",
+    "producer": "1_16",
+    "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"batch_id\": {\n      \"type\": [\"number\", \"null\"],\n      \"readOnly\": false\n    },\n    \"invoice_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"credit_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"sales_order_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"invoice_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    },\n    \"credit_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    },\n    \"sales_order_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    }\n  }\n}"
+  }, {
+    "key": "`Task_16_connectorOutputPayload`",
+    "dataType": "JSON_VALUE",
+    "displayName": "`Task_16_connectorOutputPayload`",
+    "isTransient": true,
+    "producer": "1_16"
+  }, {
+    "key": "`Task_15_connectorInputPayload`",
+    "dataType": "JSON_VALUE",
+    "defaultValue": {
+      "jsonValue": "{\n  \"load_status\": true\n}"
+    },
+    "displayName": "`Task_15_connectorInputPayload`",
+    "producer": "1_15",
+    "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"batch_id\": {\n      \"type\": [\"number\", \"null\"],\n      \"readOnly\": false\n    },\n    \"invoice_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"credit_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"sales_order_load_status\": {\n      \"type\": [\"boolean\", \"null\"],\n      \"readOnly\": false\n    },\n    \"invoice_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    },\n    \"credit_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    },\n    \"sales_order_last_load_time\": {\n      \"type\": [\"string\", \"null\"],\n      \"readOnly\": false\n    }\n  }\n}"
+  }, {
+    "key": "job_load_time",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "job_load_time"
+  }, {
+    "key": "bq_new_load_time",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "bq_new_load_time",
+    "inputOutputType": "IN"
+  }, {
+    "key": "customer_status",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "customer_status",
+    "inputOutputType": "OUT"
+  }, {
+    "key": "customer_JSON",
+    "dataType": "JSON_VALUE",
+    "displayName": "customer_JSON",
+    "inputOutputType": "OUT"
+  }, {
+    "key": "billing_customer_status_url",
+    "dataType": "STRING_VALUE",
+    "displayName": "billing_customer_status_url"
+  }, {
+    "key": "customer_pull_url",
+    "dataType": "STRING_VALUE",
+    "displayName": "customer_pull_url"
+  }, {
+    "key": "customer_query",
+    "dataType": "STRING_VALUE",
+    "displayName": "customer_query"
+  }, {
+    "key": "sf_finalpayload",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": ""
+    },
+    "displayName": "sf_finalpayload",
+    "inputOutputType": "OUT"
+  }, {
+    "key": "`Task_1_filterClause`",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": "LOWER(pipeline_name) LIKE \u0027%custmdm_accountteam%\u0027 AND load_status IS false"
+    },
+    "displayName": "`Task_1_filterClause`",
+    "producer": "1_1"
+  }, {
+    "key": "`Task_15_filterClause`",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": "LOWER(pipeline_name) LIKE \u0027%custmdm_accountteam%\u0027 AND load_status IS false"
+    },
+    "displayName": "`Task_15_filterClause`",
+    "producer": "1_15"
+  }, {
+    "key": "salesforce_query_url",
+    "dataType": "STRING_VALUE",
+    "defaultValue": {
+      "stringValue": "https://dnb--fcsibm.sandbox.my.salesforce.com/services/data/v58.0/jobs/query"
+    },
+    "displayName": "salesforce_query_url",
+    "inputOutputType": "IN"
+  }]
+}
